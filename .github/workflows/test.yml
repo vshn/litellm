@@ -1,0 +1,41 @@
+env:
+  KUBECONFIG: /tmp/github-ci.kubeconfig
+  REGISTRY: registry.cloudscale-lpg-2.appuio.cloud
+  TEST_DOMAIN: apps.cloudscale-lpg-2.appuio.cloud
+jobs:
+  build:
+    environment: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/setup
+      with:
+        KUBECONFIG_DATA: "${{ secrets.KUBECONFIG_TEST }}"
+    - env:
+        NEWLINE: |2+
+
+      name: Helm Chart preview
+      run: |
+        jq -n '.env=(env | with_entries(select(.key | startswith("KUBECONFIG_") | not)))' > ${PWD}/env.yaml
+        jq 'select(.!=null)|{vars:.,env:.}' > "${PWD}/vars.yaml" <<'EOF' ${{ env.NEWLINE }}${{ toJson(vars) }}${{ env.NEWLINE }}EOF
+        jq 'select(.!=null)|{secrets:.,env:.}' > "${PWD}/secrets.yaml" <<'EOF' ${{ env.NEWLINE }}${{ toJson(secrets) }}${{ env.NEWLINE }}EOF
+        jq '.env | keys' ${PWD}/env.yaml
+        jq '.env | keys' ${PWD}/vars.yaml
+        jq '.env | keys' ${PWD}/secrets.yaml
+
+        cp "${KUBECONFIG}" ".github-ci.kubeconfig"
+        docker run -v "${PWD}:/data" -w /data ghcr.io/appuio/helm-v4:latest /bin/bash -c "cp .github-ci.kubeconfig /tmp/github-ci.kubeconfig; chmod 400 /tmp/github-ci.kubeconfig; /bin/helm dependency update /data; HELM_DIFF_USE_UPGRADE_DRY_RUN=true /bin/helm diff upgrade '${CI_COMMIT_REF_SLUG}' /data --namespace '${NAMESPACE}' --values "/data/values.yaml" --values "/data/env.yaml" --values /data/vars.yaml --values /data/secrets.yaml --kubeconfig /tmp/github-ci.kubeconfig --allow-unreleased"
+    - env:
+        NEWLINE: |2+
+
+      name: Helm Chart deploy
+      run: |
+        jq -n '.env=(env | with_entries(select(.key | startswith("KUBECONFIG_") | not)))' > ${PWD}/env.yaml
+        jq 'select(.!=null)|{vars:.,env:.}' > "${PWD}/vars.yaml" <<'EOF' ${{ env.NEWLINE }}${{ toJson(vars) }}${{ env.NEWLINE }}EOF
+        jq 'select(.!=null)|{secrets:.,env:.}' > "${PWD}/secrets.yaml" <<'EOF' ${{ env.NEWLINE }}${{ toJson(secrets) }}${{ env.NEWLINE }}EOF
+        cp "${KUBECONFIG}" ".github-ci.kubeconfig"
+        docker run -v "${PWD}:/data" -w /data ghcr.io/appuio/helm-v4:latest /bin/bash -c "cp .github-ci.kubeconfig /tmp/github-ci.kubeconfig; chmod 400 /tmp/github-ci.kubeconfig; /bin/helm dependency update /data; /bin/helm upgrade --install '${CI_COMMIT_REF_SLUG}' /data --namespace '${NAMESPACE}' --values "/data/values.yaml" --values "/data/env.yaml" --values /data/vars.yaml --values /data/secrets.yaml --kubeconfig /tmp/github-ci.kubeconfig"
+name: Build and deploy to test
+"on":
+  push: {}
+  workflow_dispatch: {}

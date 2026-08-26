@@ -1,0 +1,29 @@
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: litellm-db
+spec:
+  parameters:
+    backup:
+      retention: 1
+      deletionProtection: false
+    instances: 1
+    maintenance:
+      dayOfWeek: tuesday
+      timeOfDay: "22:20:00"
+    security:
+      deletionProtection: false
+    service:
+      majorVersion: "18"
+      access:
+        - user: {{ .Values.litellm.db.database }}
+          writeConnectionSecretToRef:
+            name: {{ .Values.litellm.db.secret.name }}
+            namespace: {{ .Release.Namespace }}
+    size:
+      plan: standard-2
+      requests:
+        cpu: 100m
+        memory: 500Mi
+  writeConnectionSecretToRef:
+    name: litellm-db-postgres-creds
