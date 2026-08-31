@@ -1,0 +1,13 @@
+# litell helm chart requires to configure litellm.pdb for a pdb to be rendered
+# I prefer to have this tied to replicaCount to avoid having a pdb for a deployment with only 1 replica.
+{{- if gt (int .Values.litellm.replicaCount) 1 }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: zk-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: litellm
+{{- end }}

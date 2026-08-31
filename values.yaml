@@ -1,0 +1,73 @@
+litellm:
+  db:
+    deployStandalone: false
+    useExisting: true
+    secret:
+      usernameKey: POSTGRESQL_USER
+      passwordKey: POSTGRESQL_PASSWORD
+      endpointKey: POSTGRESQL_HOST
+  image:
+    repository: ghcr.io/berriai/litellm
+    pullPolicy: Always
+  serviceAccount:
+    create: true
+  proxy_config:
+    model_list:
+      - model_name: vshn/*
+        litellm_params:
+          model: "openai/*"
+          api_base: https://us-ai.corp.vshn.net/api
+          api_key: "os.environ/VSHN_US_AI_API_KEY"
+    litellm_settings:
+      require_auth_for_metrics_endpoint: false
+      callbacks:
+        - prometheus
+  masterkeySecretName: "runtime-secrets"
+  ingress:
+    enabled: true
+    className: "openshift-default"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      haproxy.router.openshift.io/timeout: "20m"
+    hosts:
+      - host: litellm-proxy.apps.cloudscale-lpg-2.appuio.cloud
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+          - path: /metrics
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: nonexistent-service
+                port:
+                  number: 9999
+    tls:
+      - hosts:
+        - litellm-proxy.apps.cloudscale-lpg-2.appuio.cloud
+        secretName: litellm-ingress
+  environmentSecrets:
+    - runtime-secrets
+
+  replicaCount: 1
+  serviceMonitor:
+    enabled: true
+  podLabels:
+    test: "2"
+  resources:
+    limits:
+      cpu: 2
+      memory: 3Gi
+    requests:
+      cpu: 1
+      memory: 1500Mi
+  migrationJob:
+    hooks:
+      helm:
+        enabled: true
+    resources:
+      limits:
+        memory: 4Gi
+      requests:
+        memory: 2Gi
+
+env: {}
