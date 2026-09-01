@@ -48,11 +48,9 @@ litellm:
   environmentSecrets:
     - runtime-secrets
 
-  replicaCount: 1
+  replicaCount: 2
   serviceMonitor:
     enabled: true
-  podLabels:
-    test: "2"
   resources:
     limits:
       cpu: 2
