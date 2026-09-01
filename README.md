@@ -2,6 +2,12 @@
 
 This wrapper chart is intended to be used in conjunction with [AppFlow](https://control.vshn.net/appflow/apps)
 
+## Initial Setup
+
+Helm tries to install the dependencies before it installs manifests from the wrapper chart.
+This fails due to postgres not being available.
+This means the [VSHNPostgresql](/templates/vshnpostgresql.yaml) needs to be rendered locally and applied to the cluster before trying to roll out a deployment for the first time.
+
 ## Configuration
 
 ### Environment Variables
