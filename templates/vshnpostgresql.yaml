@@ -7,7 +7,6 @@ spec:
   parameters:
     backup:
       retention: 1
-      deletionProtection: false
     instances: 1
     maintenance:
       dayOfWeek: tuesday
