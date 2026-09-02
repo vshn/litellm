@@ -20,8 +20,11 @@ litellm:
           api_key: "os.environ/VSHN_US_AI_API_KEY"
     litellm_settings:
       require_auth_for_metrics_endpoint: false
+      success_callback: ["otel"]
       callbacks:
         - prometheus
+    environment_variables:
+      OTEL_EXPORTER: "console"
   masterkeySecretName: "runtime-secrets"
   ingress:
     enabled: true
