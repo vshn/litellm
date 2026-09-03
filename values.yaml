@@ -59,8 +59,8 @@ litellm:
       cpu: 2
       memory: 3Gi
     requests:
-      cpu: 1
-      memory: 1500Mi
+      cpu: 10m
+      memory: 1000Mi
   migrationJob:
     hooks:
       helm:
