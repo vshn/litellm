@@ -25,6 +25,7 @@ litellm:
         - prometheus
     environment_variables:
       OTEL_EXPORTER: "console"
+      LITELLM_DISABLE_NO_REDIS_WARNING: true
   masterkeySecretName: "runtime-secrets"
   ingress:
     enabled: true
