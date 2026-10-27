@@ -49,5 +49,12 @@
         "dependency",
       ],
     },
+    {
+      "matchDepNames": [
+        "ghcr.io/berriai/litellm",
+        "litellm-helm",
+      ],
+      "groupName": "litellm"
+    }
   ],
 }
