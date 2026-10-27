@@ -54,7 +54,8 @@
         "ghcr.io/berriai/litellm",
         "litellm-helm",
       ],
-      "groupName": "litellm"
+      "groupName": "litellm",
+      "minimumReleaseAge": "2 days"
     }
   ],
 }
