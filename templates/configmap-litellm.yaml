@@ -43,6 +43,8 @@ data:
           api_key: "os.environ/OPENCODE_1_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+          model_info:
+            pricing_provider: opencode_go
 
       # for api key rotation without downtime
       - model_name: "opencode/{{ $model }}"
@@ -52,6 +54,8 @@ data:
           api_key: "os.environ/OPENCODE_2_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+          model_info:
+            pricing_provider: opencode_go
 
       - model_name: "opencode-fallback/{{ $model }}"
         litellm_params:
@@ -60,6 +64,8 @@ data:
           api_key: "os.environ/OPENCODE_3_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+          model_info:
+            pricing_provider: opencode_go
 {{- end }}
     router_settings:
 {{- with $config.router_settings }}
