@@ -56,6 +56,9 @@
       ],
       "groupName": "litellm",
       "internalChecksFilter": "flexible",
+      "group": {
+        "branchName": "litellm-{{{newMajor}}}.{{{newMinor}}}.{{{newPatch}}}",
+      }
     }
   ],
 }
