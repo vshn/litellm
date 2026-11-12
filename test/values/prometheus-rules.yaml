@@ -1,0 +1,13 @@
+litellm:
+  image:
+    tag: test
+env:
+  INGRESS_HOSTS: a,b
+prometheusRule:
+  enabled: true
+  labels:
+    monitoring.syn.tools/enabled: "true"
+  defaults:
+    alertLabels:
+      platform_alerts: "true"
+      team: "ai-services"

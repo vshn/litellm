@@ -80,5 +80,42 @@ ingress:
   secretName: litellm-ingress
 enableVSHNPostgreSQL: false
 generatePostgresSecret: true
+prometheusRule:
+  enabled: false
+  labels: { }
+  defaults:
+    severity: warning
+    for: 5m
+    alertLabels: { }
+  groups:
+    litellm-fallbacks:
+      enabled: true
+      rules:
+        LiteLLMFallbackUsed:
+          enabled: true
+          expr: |
+            sum by (requested_model, fallback_model) (increase(litellm_deployment_successful_fallbacks_total[30m])) > 0
+          summary: "LiteLLM served {{ $labels.requested_model }} from fallback model {{ $labels.fallback_model }}"
+          description: >-
+            Within the last 30m, requests for {{ $labels.requested_model }} were served by the
+            fallback deployment {{ $labels.fallback_model }}. The primary deployment likely
+            failed (rate limit, outage, cooldown).
+        LiteLLMFallbackFailed:
+          enabled: true
+          expr: |
+            sum by (requested_model, fallback_model) (increase(litellm_deployment_failed_fallbacks_total[30m])) > 0
+          summary: "LiteLLM fallback for {{ $labels.requested_model }} to {{ $labels.fallback_model }} failed"
+          description: >-
+            Within the last 30m, falling back from {{ $labels.requested_model }} to
+            {{ $labels.fallback_model }} failed ({{ $labels.exception_class }},
+            status {{ $labels.exception_status }}).
+        LiteLLMDeploymentCooledDown:
+          enabled: true
+          expr: |
+            sum by (litellm_model_name) (increase(litellm_deployment_cooled_down_total[30m])) > 0
+          summary: "LiteLLM deployment {{ $labels.litellm_model_name }} was cooled down"
+          description: >-
+            Within the last 30m, the load balancer cooled down deployment
+            {{ $labels.litellm_model_name }} (status {{ $labels.exception_status }}).
 wrapperProxyConfigMap:
   create: false

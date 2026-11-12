@@ -1,0 +1,37 @@
+{{- if .Values.prometheusRule.enabled }}
+{{- $defaults := .Values.prometheusRule.defaults | default dict }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: litellm
+  {{- if .Values.prometheusRule.labels }}
+  labels:
+    {{- with .Values.prometheusRule.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  groups:
+  {{- range $groupName, $group := .Values.prometheusRule.groups }}
+    {{- if (dig "enabled" true $group) }}
+    - name: {{ $groupName | quote }}
+      rules:
+      {{- range $alertName, $rule := $group.rules }}
+        {{- if (dig "enabled" false $rule) }}
+        - alert: {{ $alertName | quote }}
+          expr: |
+{{ $rule.expr | indent 12 }}
+          for: {{ $rule.for | default $defaults.for }}
+          labels:
+            severity: {{ $rule.severity | default $defaults.severity | default "warning" | quote }}
+          {{- with $rule.labels | default $defaults.alertLabels }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          annotations:
+            summary: {{ $rule.summary | quote }}
+            description: {{ $rule.description | quote }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
