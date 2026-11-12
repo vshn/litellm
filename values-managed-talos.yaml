@@ -29,3 +29,6 @@ ingress:
           name: nonexistent-service
           port:
             number: 9999
+prometheusRule:
+  labels:
+    monitoring.syn.tools/enabled: "true"
