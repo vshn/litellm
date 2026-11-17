@@ -58,11 +58,8 @@ data:
             x-opencode-session: litellm
       - model_name: "fast"
         litellm_params:
-          model: "openai/kimi-k2.7-code"
-          api_base: "os.environ/OPENCODE_API_BASE"
-          api_key: "os.environ/OPENCODE_1_API_KEY"
-          extra_headers:
-            x-opencode-session: litellm
+          model: "openrouter/deepseek/deepseek-chat-v3.1"
+          api_key: "os.environ/OPENROUTER_API_KEY"
       - model_name: "coding"
         litellm_params:
           model: "openai/deepseek-v4.1-flash"
@@ -86,29 +83,26 @@ data:
             x-opencode-session: litellm
       - model_name: "embedding"
         litellm_params:
-          model: "openai/kimi-k2.7-code"
-          api_base: "os.environ/OPENCODE_API_BASE"
-          api_key: "os.environ/OPENCODE_1_API_KEY"
-          extra_headers:
-            x-opencode-session: litellm
+          model: "openrouter/openai/text-embedding-3-small"
+          api_key: "os.environ/OPENROUTER_API_KEY"
 {{- range $model := .Values.wrapperProxyConfigMap.opencodeModels }}
 
 {{- range $i, $_ := until (20 | int) }}
 {{- $opencodeKey := printf "OPENCODE_%s_API_KEY" ($i | toString) }}
 {{- if and (ne $i 3) (hasKey $.Values.env $opencodeKey) }}
       # for api key rotation without downtime
-      - model_name: "opencode/{{ $model }}"
+      - model_name: "opencode/{{ $model.opencode_model }}"
         litellm_params:
-          model: "openai/{{ $model }}"
+          model: "openai/{{ $model.opencode_model }}"
           api_base: "os.environ/OPENCODE_API_BASE"
           api_key: "os.environ/{{ $opencodeKey }}"
           extra_headers:
             x-opencode-session: litellm
 {{- end }}
 {{- end }}
-      - model_name: "opencode-fallback/{{ $model }}"
+      - model_name: "opencode-fallback/{{ $model.opencode_model }}"
         litellm_params:
-          model: "openai/{{ $model }}"
+          model: "openai/{{ $model.opencode_model }}"
           api_base: "https://opencode.ai/inference/openai/v1"
           api_key: "os.environ/OPENCODE_3_API_KEY"
           extra_headers:
@@ -121,8 +115,11 @@ data:
 {{- end }}
       fallbacks:
 {{- range $model := .Values.wrapperProxyConfigMap.opencodeModels }}
-        - "opencode/{{ $model }}":
-            - "opencode-fallback/{{ $model }}"
+        - "opencode/{{ $model.opencode_model }}":
+{{- range $model.fallback_models }}
+            - {{ . | quote }}
+{{- end }}
+            - "opencode-fallback/{{ $model.opencode_model }}"
 {{- end }}
         - "chat":
             - "opencode/deepseek-v4.1-flash"
@@ -130,38 +127,42 @@ data:
             - "opencode/kimi-k2.7-code"
             - "opencode/qwen-3.8-flash"
             - "opencode/claude-haiku-5-5"
+            - "openrouter-fallback/deepseek/deepseek-v4.1-flash"
             - "opencode-fallback/deepseek-v4.1-flash"
         - "chat+thinking":
             - "opencode/deepseek-v4-pro"
             - "opencode/deepseek-glm-5.3"
             - "opencode/qwen-3.8"
             - "opencode-fallback/deepseek-v4-pro"
+            - "openrouter-fallback/deepseek/deepseek-v4-pro-0813"
         - "web-research":
             - "opencode/kimi-k2.7-code"
             - "opencode/minimax-m3.1-flash"
+            - "openrouter-fallback/deepseek/deepseek-v3.1"
+            - "openrouter-fallback/deepseek/deepseek-v3.2"
             - "opencode-fallback/kimi-k2.7-code"
         - "fast":
-            - "opencode/kimi-k2.7-code"
-            - "opencode/minimax-m3.1-flash"
-            - "opencode-fallback/kimi-k2.7-code"
+            - "openrouter/deepseek/deepseek-v3.2"
         - "coding":
             - "opencode/deepseek-v4.1-flash"
             - "opencode/deepseek-glm-5.3-flash"
             - "opencode/kimi-k2.7-code"
             - "opencode/qwen-3.8-flash"
             - "opencode/claude-haiku-5-5"
+            - "openrouter-fallback/deepseek/deepseek-v4.1-flash"
             - "opencode-fallback/deepseek-v4.1-flash"
         - "coding+thinking":
             - "opencode/deepseek-v4-pro"
             - "opencode/deepseek-glm-5.3"
             - "opencode/qwen-3.8"
+            - "openrouter-fallback/deepseek/deepseek-v4-pro-0813"
             - "opencode-fallback/deepseek-v4-pro"
         - "complex-coding":
             - "opencode/kimi-k3"
             - "opencode/kimi-k3.1-pro"
             - "opencode-fallback/kimi-k3.1-pro"
+            - "openrouter-fallback/moonshotai/kimi-k3"
         - "embedding":
-            - "opencode/kimi-k2.7-code"
-            - "opencode/minimax-m3.1-flash"
-            - "opencode-fallback/kimi-k2.7-code"
+            - "openrouter/openai/text-embedding-3-small:batch"
+            - "openrouter-fallback/openai/text-embedding-ada-002"
 {{- end }}
