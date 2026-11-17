@@ -11,40 +11,90 @@ litellm:
       # it seems litellm strips the whole path of api_base for model discovery and sends the request to <host>/models
       # this is unusable.
       check_provider_endpoint: false
-    model_list: []
+    model_list:
+      - model_name: "openrouter/*"
+        litellm_params:
+          model: openrouter/*
+          api_key: os.environ/OPENROUTER_API_KEY
+      - model_name: "openrouter-fallback/*"
+        litellm_params:
+          model: openrouter/*
+          api_key: os.environ/OPENROUTER_API_KEY
+        model_info:
+          discoverable: false
 wrapperProxyConfigMap:
   create: true
   opencodeModels:
     #doesn't work yet, only support Responses api
     #    - grok-4.7
-    - glm-5.3-flash
-    - glm-5.3
-    - glm-5.2
+    - opencode_model: glm-5.3-flash
+      fallback_models:
+      - openrouter-fallback/z-ai/glm-5.3-flash
+    - opencode_model: glm-5.3
+      fallback_models:
+      - openrouter-fallback/z-ai/glm-5.3
+    - opencode_model: glm-5.2
+      fallback_models:
+      - openrouter-fallback/z-ai/glm-5.2
     #they don't work yet, only support Responses api
     #    - gpt-6-luna
     #    - gpt-5.6-luna
-    - claude-haiku-5-5
+    - opencode_model: claude-haiku-5-5
+      fallback_models:
+      - openrouter-fallback/anthropic/claude-haiku-5.5
     #doesn't work yet, doesn't support completions api.
     #    - gemini-4-argon
-    - kimi-k3.1-pro
-    - kimi-k3
-    - kimi-k2.7-code
-    - longcat-2.0
-    - step-5-preview
-    - beam-free
-    - mimo-v2.6-flash-free
-    - minimax-m3.1-flash
-    - minimax-m3
+    - opencode_model: kimi-k3.1-pro
+      fallback_models:
+      - openrouter-fallback/moonshotai/kimi-k3.1-pro
+    - opencode_model: kimi-k3
+      fallback_models:
+      - openrouter-fallback/moonshotai/kimi-k3
+    - opencode_model: kimi-k2.7-code
+      fallback_models:
+      - openrouter-fallback/moonshotai/kimi-k2.7-code
+    - opencode_model: longcat-2.0
+      fallback_models:
+      - openrouter-fallback/meituan/longcat-2.0
+    - opencode_model: step-5-preview
+      fallback_models:
+      - openrouter-fallback/stepfun/step-5-preview
+    - opencode_model: beam-free
+      fallback_models:
+      - openrouter-fallback/reflection/beam-1.0-501b-a23b
+    - opencode_model: mimo-v2.6-flash-free
+      fallback_models:
+      - openrouter-fallback/xiaomi/mimo-v2.6-flash
+    - opencode_model: minimax-m3.1-flash
+      fallback_models:
+      - openrouter-fallback/minimax/minimax-m3.1-flash
+    - opencode_model: minimax-m3
+      fallback_models:
+      - openrouter-fallback/minimax/minimax-m3
     #doesn't work yet, needs consent to train on data.
     #    - muse-spark-1.3-contributor
     #    - muse-spark-1.2-contributor
-    - qwen3.8-max
-    - qwen3.8-flash
-    - qwen3.7-plus
-    - deepseek-v4.1-flash
-    - deepseek-v4-pro
-    - hy4-preview
-    - hy3
+    - opencode_model: qwen3.8-max
+      fallback_models:
+      - openrouter-fallback/qwen/qwen3.8-max-0902
+      - openrouter-fallback/qwen/qwen3.8-max-prime
+    - opencode_model: qwen3.8-flash
+      fallback_models:
+      - openrouter-fallback/qwen/qwen3.8-flash
+    - opencode_model: qwen3.7-plus
+      fallback_models:
+      - openrouter-fallback/qwen/qwen3.7-plus
+    - opencode_model: deepseek-v4.1-flash
+      fallback_models:
+      - openrouter-fallback/deepseek/deepseek-v4.1-flash
+    - opencode_model: deepseek-v4-pro
+      fallback_models:
+      - openrouter-fallback/deepseek/deepseek-v4-pro-0813
+      - openrouter-fallback/deepseek/deepseek-v4-pro-0423
+    - opencode_model: hy4-preview
+      fallback_models: []
+    - opencode_model: hy3
+      fallback_models: []
 env:
   INGRESS_HOSTS: a,b
   OPENCODE_1_API_KEY: test1

@@ -70,6 +70,16 @@ data:
       success_callback:
       - otel
     model_list:
+      - litellm_params:
+          api_key: os.environ/OPENROUTER_API_KEY
+          model: openrouter/*
+        model_name: openrouter/*
+      - litellm_params:
+          api_key: os.environ/OPENROUTER_API_KEY
+          model: openrouter/*
+        model_info:
+          discoverable: false
+        model_name: openrouter-fallback/*
       - model_name: "chat"
         litellm_params:
           model: "openai/deepseek-v4.1-flash"
@@ -93,11 +103,8 @@ data:
             x-opencode-session: litellm
       - model_name: "fast"
         litellm_params:
-          model: "openai/kimi-k2.7-code"
-          api_base: "os.environ/OPENCODE_API_BASE"
-          api_key: "os.environ/OPENCODE_1_API_KEY"
-          extra_headers:
-            x-opencode-session: litellm
+          model: "openrouter/deepseek/deepseek-chat-v3.1"
+          api_key: "os.environ/OPENROUTER_API_KEY"
       - model_name: "coding"
         litellm_params:
           model: "openai/deepseek-v4.1-flash"
@@ -121,11 +128,8 @@ data:
             x-opencode-session: litellm
       - model_name: "embedding"
         litellm_params:
-          model: "openai/kimi-k2.7-code"
-          api_base: "os.environ/OPENCODE_API_BASE"
-          api_key: "os.environ/OPENCODE_1_API_KEY"
-          extra_headers:
-            x-opencode-session: litellm
+          model: "openrouter/openai/text-embedding-3-small"
+          api_key: "os.environ/OPENROUTER_API_KEY"
       # for api key rotation without downtime
       - model_name: "opencode/glm-5.3-flash"
         litellm_params:
@@ -909,40 +913,60 @@ data:
     router_settings:
       fallbacks:
         - "opencode/glm-5.3-flash":
+            - "openrouter-fallback/z-ai/glm-5.3-flash"
             - "opencode-fallback/glm-5.3-flash"
         - "opencode/glm-5.3":
+            - "openrouter-fallback/z-ai/glm-5.3"
             - "opencode-fallback/glm-5.3"
         - "opencode/glm-5.2":
+            - "openrouter-fallback/z-ai/glm-5.2"
             - "opencode-fallback/glm-5.2"
         - "opencode/claude-haiku-5-5":
+            - "openrouter-fallback/anthropic/claude-haiku-5.5"
             - "opencode-fallback/claude-haiku-5-5"
         - "opencode/kimi-k3.1-pro":
+            - "openrouter-fallback/moonshotai/kimi-k3.1-pro"
             - "opencode-fallback/kimi-k3.1-pro"
         - "opencode/kimi-k3":
+            - "openrouter-fallback/moonshotai/kimi-k3"
             - "opencode-fallback/kimi-k3"
         - "opencode/kimi-k2.7-code":
+            - "openrouter-fallback/moonshotai/kimi-k2.7-code"
             - "opencode-fallback/kimi-k2.7-code"
         - "opencode/longcat-2.0":
+            - "openrouter-fallback/meituan/longcat-2.0"
             - "opencode-fallback/longcat-2.0"
         - "opencode/step-5-preview":
+            - "openrouter-fallback/stepfun/step-5-preview"
             - "opencode-fallback/step-5-preview"
         - "opencode/beam-free":
+            - "openrouter-fallback/reflection/beam-1.0-501b-a23b"
             - "opencode-fallback/beam-free"
         - "opencode/mimo-v2.6-flash-free":
+            - "openrouter-fallback/xiaomi/mimo-v2.6-flash"
             - "opencode-fallback/mimo-v2.6-flash-free"
         - "opencode/minimax-m3.1-flash":
+            - "openrouter-fallback/minimax/minimax-m3.1-flash"
             - "opencode-fallback/minimax-m3.1-flash"
         - "opencode/minimax-m3":
+            - "openrouter-fallback/minimax/minimax-m3"
             - "opencode-fallback/minimax-m3"
         - "opencode/qwen3.8-max":
+            - "openrouter-fallback/qwen/qwen3.8-max-0902"
+            - "openrouter-fallback/qwen/qwen3.8-max-prime"
             - "opencode-fallback/qwen3.8-max"
         - "opencode/qwen3.8-flash":
+            - "openrouter-fallback/qwen/qwen3.8-flash"
             - "opencode-fallback/qwen3.8-flash"
         - "opencode/qwen3.7-plus":
+            - "openrouter-fallback/qwen/qwen3.7-plus"
             - "opencode-fallback/qwen3.7-plus"
         - "opencode/deepseek-v4.1-flash":
+            - "openrouter-fallback/deepseek/deepseek-v4.1-flash"
             - "opencode-fallback/deepseek-v4.1-flash"
         - "opencode/deepseek-v4-pro":
+            - "openrouter-fallback/deepseek/deepseek-v4-pro-0813"
+            - "openrouter-fallback/deepseek/deepseek-v4-pro-0423"
             - "opencode-fallback/deepseek-v4-pro"
         - "opencode/hy4-preview":
             - "opencode-fallback/hy4-preview"
@@ -954,40 +978,44 @@ data:
             - "opencode/kimi-k2.7-code"
             - "opencode/qwen-3.8-flash"
             - "opencode/claude-haiku-5-5"
+            - "openrouter-fallback/deepseek/deepseek-v4.1-flash"
             - "opencode-fallback/deepseek-v4.1-flash"
         - "chat+thinking":
             - "opencode/deepseek-v4-pro"
             - "opencode/deepseek-glm-5.3"
             - "opencode/qwen-3.8"
             - "opencode-fallback/deepseek-v4-pro"
+            - "openrouter-fallback/deepseek/deepseek-v4-pro-0813"
         - "web-research":
             - "opencode/kimi-k2.7-code"
             - "opencode/minimax-m3.1-flash"
+            - "openrouter-fallback/deepseek/deepseek-v3.1"
+            - "openrouter-fallback/deepseek/deepseek-v3.2"
             - "opencode-fallback/kimi-k2.7-code"
         - "fast":
-            - "opencode/kimi-k2.7-code"
-            - "opencode/minimax-m3.1-flash"
-            - "opencode-fallback/kimi-k2.7-code"
+            - "openrouter/deepseek/deepseek-v3.2"
         - "coding":
             - "opencode/deepseek-v4.1-flash"
             - "opencode/deepseek-glm-5.3-flash"
             - "opencode/kimi-k2.7-code"
             - "opencode/qwen-3.8-flash"
             - "opencode/claude-haiku-5-5"
+            - "openrouter-fallback/deepseek/deepseek-v4.1-flash"
             - "opencode-fallback/deepseek-v4.1-flash"
         - "coding+thinking":
             - "opencode/deepseek-v4-pro"
             - "opencode/deepseek-glm-5.3"
             - "opencode/qwen-3.8"
+            - "openrouter-fallback/deepseek/deepseek-v4-pro-0813"
             - "opencode-fallback/deepseek-v4-pro"
         - "complex-coding":
             - "opencode/kimi-k3"
             - "opencode/kimi-k3.1-pro"
             - "opencode-fallback/kimi-k3.1-pro"
+            - "openrouter-fallback/moonshotai/kimi-k3"
         - "embedding":
-            - "opencode/kimi-k2.7-code"
-            - "opencode/minimax-m3.1-flash"
-            - "opencode-fallback/kimi-k2.7-code"
+            - "openrouter/openai/text-embedding-3-small:batch"
+            - "openrouter-fallback/openai/text-embedding-ada-002"
 ---
 # Source: llm-proxy/templates/runtime-env.yaml
 apiVersion: v1
