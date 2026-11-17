@@ -106,6 +106,12 @@ data:
             x-opencode-session: litellm
 {{- end }}
 {{- end }}
+      - model_name: "opencode-byok/{{ $model }}"
+        litellm_params:
+          model: "openai/{{ $model }}"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/{{ $model }}"
         litellm_params:
           model: "openai/{{ $model }}"
@@ -121,6 +127,9 @@ data:
 {{- end }}
       fallbacks:
 {{- range $model := .Values.wrapperProxyConfigMap.opencodeModels }}
+        - "opencode-byok/{{ $model }}":
+            - "opencode/{{ $model }}"
+            - "opencode-fallback/{{ $model }}"
         - "opencode/{{ $model }}":
             - "opencode-fallback/{{ $model }}"
 {{- end }}

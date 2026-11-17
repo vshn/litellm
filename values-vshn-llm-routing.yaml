@@ -5,6 +5,11 @@ litellm:
     name: litellm-config
 
   proxy_config:
+    general_settings:
+      forward_client_headers_to_llm_api: true
+      model_group_settings:
+        forward_client_headers_to_llm_api:
+          - opencode-byok/*
     litellm_settings:
       # it seems litellm strips the whole path of api_base for model discovery and sends the request to <host>/models
       # this is unusable.

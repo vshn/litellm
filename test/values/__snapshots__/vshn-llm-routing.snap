@@ -61,7 +61,11 @@ data:
       LITELLM_DISABLE_NO_REDIS_WARNING: true
       OTEL_EXPORTER: console
     general_settings:
+      forward_client_headers_to_llm_api: true
       master_key: os.environ/PROXY_MASTER_KEY
+      model_group_settings:
+        forward_client_headers_to_llm_api:
+        - opencode-byok/*
     litellm_settings:
       callbacks:
       - prometheus
@@ -158,6 +162,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/glm-5.3-flash"
+        litellm_params:
+          model: "openai/glm-5.3-flash"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/glm-5.3-flash"
         litellm_params:
           model: "openai/glm-5.3-flash"
@@ -195,6 +205,12 @@ data:
           model: "openai/glm-5.3"
           api_base: "os.environ/OPENCODE_API_BASE"
           api_key: "os.environ/OPENCODE_6_API_KEY"
+          extra_headers:
+            x-opencode-session: litellm
+      - model_name: "opencode-byok/glm-5.3"
+        litellm_params:
+          model: "openai/glm-5.3"
+          api_base: "https://opencode.ai/inference/openai/v1"
           extra_headers:
             x-opencode-session: litellm
       - model_name: "opencode-fallback/glm-5.3"
@@ -236,6 +252,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/glm-5.2"
+        litellm_params:
+          model: "openai/glm-5.2"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/glm-5.2"
         litellm_params:
           model: "openai/glm-5.2"
@@ -273,6 +295,12 @@ data:
           model: "openai/claude-haiku-5-5"
           api_base: "os.environ/OPENCODE_API_BASE"
           api_key: "os.environ/OPENCODE_6_API_KEY"
+          extra_headers:
+            x-opencode-session: litellm
+      - model_name: "opencode-byok/claude-haiku-5-5"
+        litellm_params:
+          model: "openai/claude-haiku-5-5"
+          api_base: "https://opencode.ai/inference/openai/v1"
           extra_headers:
             x-opencode-session: litellm
       - model_name: "opencode-fallback/claude-haiku-5-5"
@@ -314,6 +342,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/kimi-k3.1-pro"
+        litellm_params:
+          model: "openai/kimi-k3.1-pro"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/kimi-k3.1-pro"
         litellm_params:
           model: "openai/kimi-k3.1-pro"
@@ -351,6 +385,12 @@ data:
           model: "openai/kimi-k3"
           api_base: "os.environ/OPENCODE_API_BASE"
           api_key: "os.environ/OPENCODE_6_API_KEY"
+          extra_headers:
+            x-opencode-session: litellm
+      - model_name: "opencode-byok/kimi-k3"
+        litellm_params:
+          model: "openai/kimi-k3"
+          api_base: "https://opencode.ai/inference/openai/v1"
           extra_headers:
             x-opencode-session: litellm
       - model_name: "opencode-fallback/kimi-k3"
@@ -392,6 +432,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/kimi-k2.7-code"
+        litellm_params:
+          model: "openai/kimi-k2.7-code"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/kimi-k2.7-code"
         litellm_params:
           model: "openai/kimi-k2.7-code"
@@ -429,6 +475,12 @@ data:
           model: "openai/longcat-2.0"
           api_base: "os.environ/OPENCODE_API_BASE"
           api_key: "os.environ/OPENCODE_6_API_KEY"
+          extra_headers:
+            x-opencode-session: litellm
+      - model_name: "opencode-byok/longcat-2.0"
+        litellm_params:
+          model: "openai/longcat-2.0"
+          api_base: "https://opencode.ai/inference/openai/v1"
           extra_headers:
             x-opencode-session: litellm
       - model_name: "opencode-fallback/longcat-2.0"
@@ -470,6 +522,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/step-5-preview"
+        litellm_params:
+          model: "openai/step-5-preview"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/step-5-preview"
         litellm_params:
           model: "openai/step-5-preview"
@@ -507,6 +565,12 @@ data:
           model: "openai/beam-free"
           api_base: "os.environ/OPENCODE_API_BASE"
           api_key: "os.environ/OPENCODE_6_API_KEY"
+          extra_headers:
+            x-opencode-session: litellm
+      - model_name: "opencode-byok/beam-free"
+        litellm_params:
+          model: "openai/beam-free"
+          api_base: "https://opencode.ai/inference/openai/v1"
           extra_headers:
             x-opencode-session: litellm
       - model_name: "opencode-fallback/beam-free"
@@ -548,6 +612,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/mimo-v2.6-flash-free"
+        litellm_params:
+          model: "openai/mimo-v2.6-flash-free"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/mimo-v2.6-flash-free"
         litellm_params:
           model: "openai/mimo-v2.6-flash-free"
@@ -585,6 +655,12 @@ data:
           model: "openai/minimax-m3.1-flash"
           api_base: "os.environ/OPENCODE_API_BASE"
           api_key: "os.environ/OPENCODE_6_API_KEY"
+          extra_headers:
+            x-opencode-session: litellm
+      - model_name: "opencode-byok/minimax-m3.1-flash"
+        litellm_params:
+          model: "openai/minimax-m3.1-flash"
+          api_base: "https://opencode.ai/inference/openai/v1"
           extra_headers:
             x-opencode-session: litellm
       - model_name: "opencode-fallback/minimax-m3.1-flash"
@@ -626,6 +702,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/minimax-m3"
+        litellm_params:
+          model: "openai/minimax-m3"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/minimax-m3"
         litellm_params:
           model: "openai/minimax-m3"
@@ -663,6 +745,12 @@ data:
           model: "openai/qwen3.8-max"
           api_base: "os.environ/OPENCODE_API_BASE"
           api_key: "os.environ/OPENCODE_6_API_KEY"
+          extra_headers:
+            x-opencode-session: litellm
+      - model_name: "opencode-byok/qwen3.8-max"
+        litellm_params:
+          model: "openai/qwen3.8-max"
+          api_base: "https://opencode.ai/inference/openai/v1"
           extra_headers:
             x-opencode-session: litellm
       - model_name: "opencode-fallback/qwen3.8-max"
@@ -704,6 +792,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/qwen3.8-flash"
+        litellm_params:
+          model: "openai/qwen3.8-flash"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/qwen3.8-flash"
         litellm_params:
           model: "openai/qwen3.8-flash"
@@ -741,6 +835,12 @@ data:
           model: "openai/qwen3.7-plus"
           api_base: "os.environ/OPENCODE_API_BASE"
           api_key: "os.environ/OPENCODE_6_API_KEY"
+          extra_headers:
+            x-opencode-session: litellm
+      - model_name: "opencode-byok/qwen3.7-plus"
+        litellm_params:
+          model: "openai/qwen3.7-plus"
+          api_base: "https://opencode.ai/inference/openai/v1"
           extra_headers:
             x-opencode-session: litellm
       - model_name: "opencode-fallback/qwen3.7-plus"
@@ -782,6 +882,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/deepseek-v4.1-flash"
+        litellm_params:
+          model: "openai/deepseek-v4.1-flash"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/deepseek-v4.1-flash"
         litellm_params:
           model: "openai/deepseek-v4.1-flash"
@@ -819,6 +925,12 @@ data:
           model: "openai/deepseek-v4-pro"
           api_base: "os.environ/OPENCODE_API_BASE"
           api_key: "os.environ/OPENCODE_6_API_KEY"
+          extra_headers:
+            x-opencode-session: litellm
+      - model_name: "opencode-byok/deepseek-v4-pro"
+        litellm_params:
+          model: "openai/deepseek-v4-pro"
+          api_base: "https://opencode.ai/inference/openai/v1"
           extra_headers:
             x-opencode-session: litellm
       - model_name: "opencode-fallback/deepseek-v4-pro"
@@ -860,6 +972,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/hy4-preview"
+        litellm_params:
+          model: "openai/hy4-preview"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/hy4-preview"
         litellm_params:
           model: "openai/hy4-preview"
@@ -899,6 +1017,12 @@ data:
           api_key: "os.environ/OPENCODE_6_API_KEY"
           extra_headers:
             x-opencode-session: litellm
+      - model_name: "opencode-byok/hy3"
+        litellm_params:
+          model: "openai/hy3"
+          api_base: "https://opencode.ai/inference/openai/v1"
+          extra_headers:
+            x-opencode-session: litellm
       - model_name: "opencode-fallback/hy3"
         litellm_params:
           model: "openai/hy3"
@@ -908,44 +1032,104 @@ data:
             x-opencode-session: litellm
     router_settings:
       fallbacks:
+        - "opencode-byok/glm-5.3-flash":
+            - "opencode/glm-5.3-flash"
+            - "opencode-fallback/glm-5.3-flash"
         - "opencode/glm-5.3-flash":
             - "opencode-fallback/glm-5.3-flash"
+        - "opencode-byok/glm-5.3":
+            - "opencode/glm-5.3"
+            - "opencode-fallback/glm-5.3"
         - "opencode/glm-5.3":
             - "opencode-fallback/glm-5.3"
+        - "opencode-byok/glm-5.2":
+            - "opencode/glm-5.2"
+            - "opencode-fallback/glm-5.2"
         - "opencode/glm-5.2":
             - "opencode-fallback/glm-5.2"
+        - "opencode-byok/claude-haiku-5-5":
+            - "opencode/claude-haiku-5-5"
+            - "opencode-fallback/claude-haiku-5-5"
         - "opencode/claude-haiku-5-5":
             - "opencode-fallback/claude-haiku-5-5"
+        - "opencode-byok/kimi-k3.1-pro":
+            - "opencode/kimi-k3.1-pro"
+            - "opencode-fallback/kimi-k3.1-pro"
         - "opencode/kimi-k3.1-pro":
             - "opencode-fallback/kimi-k3.1-pro"
+        - "opencode-byok/kimi-k3":
+            - "opencode/kimi-k3"
+            - "opencode-fallback/kimi-k3"
         - "opencode/kimi-k3":
             - "opencode-fallback/kimi-k3"
+        - "opencode-byok/kimi-k2.7-code":
+            - "opencode/kimi-k2.7-code"
+            - "opencode-fallback/kimi-k2.7-code"
         - "opencode/kimi-k2.7-code":
             - "opencode-fallback/kimi-k2.7-code"
+        - "opencode-byok/longcat-2.0":
+            - "opencode/longcat-2.0"
+            - "opencode-fallback/longcat-2.0"
         - "opencode/longcat-2.0":
             - "opencode-fallback/longcat-2.0"
+        - "opencode-byok/step-5-preview":
+            - "opencode/step-5-preview"
+            - "opencode-fallback/step-5-preview"
         - "opencode/step-5-preview":
             - "opencode-fallback/step-5-preview"
+        - "opencode-byok/beam-free":
+            - "opencode/beam-free"
+            - "opencode-fallback/beam-free"
         - "opencode/beam-free":
             - "opencode-fallback/beam-free"
+        - "opencode-byok/mimo-v2.6-flash-free":
+            - "opencode/mimo-v2.6-flash-free"
+            - "opencode-fallback/mimo-v2.6-flash-free"
         - "opencode/mimo-v2.6-flash-free":
             - "opencode-fallback/mimo-v2.6-flash-free"
+        - "opencode-byok/minimax-m3.1-flash":
+            - "opencode/minimax-m3.1-flash"
+            - "opencode-fallback/minimax-m3.1-flash"
         - "opencode/minimax-m3.1-flash":
             - "opencode-fallback/minimax-m3.1-flash"
+        - "opencode-byok/minimax-m3":
+            - "opencode/minimax-m3"
+            - "opencode-fallback/minimax-m3"
         - "opencode/minimax-m3":
             - "opencode-fallback/minimax-m3"
+        - "opencode-byok/qwen3.8-max":
+            - "opencode/qwen3.8-max"
+            - "opencode-fallback/qwen3.8-max"
         - "opencode/qwen3.8-max":
             - "opencode-fallback/qwen3.8-max"
+        - "opencode-byok/qwen3.8-flash":
+            - "opencode/qwen3.8-flash"
+            - "opencode-fallback/qwen3.8-flash"
         - "opencode/qwen3.8-flash":
             - "opencode-fallback/qwen3.8-flash"
+        - "opencode-byok/qwen3.7-plus":
+            - "opencode/qwen3.7-plus"
+            - "opencode-fallback/qwen3.7-plus"
         - "opencode/qwen3.7-plus":
             - "opencode-fallback/qwen3.7-plus"
+        - "opencode-byok/deepseek-v4.1-flash":
+            - "opencode/deepseek-v4.1-flash"
+            - "opencode-fallback/deepseek-v4.1-flash"
         - "opencode/deepseek-v4.1-flash":
             - "opencode-fallback/deepseek-v4.1-flash"
+        - "opencode-byok/deepseek-v4-pro":
+            - "opencode/deepseek-v4-pro"
+            - "opencode-fallback/deepseek-v4-pro"
         - "opencode/deepseek-v4-pro":
             - "opencode-fallback/deepseek-v4-pro"
+        - "opencode-byok/hy4-preview":
+            - "opencode/hy4-preview"
+            - "opencode-fallback/hy4-preview"
         - "opencode/hy4-preview":
             - "opencode-fallback/hy4-preview"
+        - "opencode-byok/hy3":
+            - "opencode/hy3"
+            - "opencode-fallback/hy3"
         - "opencode/hy3":
             - "opencode-fallback/hy3"
         - "chat":
@@ -1375,7 +1559,7 @@ metadata:
     helm.sh/hook: "pre-install,pre-upgrade"
     helm.sh/hook-delete-policy: "before-hook-creation"
     helm.sh/hook-weight: "1"
-    checksum/config: b724009fe64cc83263af19874728e07f3c5d18adbf4329e6b0943bd5669d764e
+    checksum/config: e1eb6ec7b1b132d9fd619710772a946d854b84930abec01653c63a554074c959
 spec:
   template:
     metadata:
