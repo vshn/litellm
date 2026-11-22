@@ -333,17 +333,6 @@ spec:
       annotations:
         summary: "LiteLLM fallback for {{ $labels.requested_model }} to {{ $labels.fallback_model }} failed"
         description: "Within the last 30m, falling back from {{ $labels.requested_model }} to {{ $labels.fallback_model }} failed ({{ $labels.exception_class }}, status {{ $labels.exception_status }})."
-    - alert: "LiteLLMFallbackUsed"
-      expr: |
-        sum by (requested_model, fallback_model) (increase(litellm_deployment_successful_fallbacks_total[30m])) > 0
-      for: 5m
-      labels:
-        severity: "info"
-        platform_alerts: "true"
-        team: ai-services
-      annotations:
-        summary: "LiteLLM served {{ $labels.requested_model }} from fallback model {{ $labels.fallback_model }}"
-        description: "Within the last 30m, requests for {{ $labels.requested_model }} were served by the fallback deployment {{ $labels.fallback_model }}. The primary deployment likely failed (rate limit, outage, cooldown)."
 ---
 # Source: llm-proxy/charts/litellm/templates/servicemonitor.yaml
 apiVersion: monitoring.coreos.com/v1

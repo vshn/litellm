@@ -92,7 +92,7 @@ prometheusRule:
       enabled: true
       rules:
         LiteLLMFallbackUsed:
-          enabled: true
+          enabled: false
           expr: |
             sum by (requested_model, fallback_model) (increase(litellm_deployment_successful_fallbacks_total[30m])) > 0
           summary: "LiteLLM served {{ $labels.requested_model }} from fallback model {{ $labels.fallback_model }}"
