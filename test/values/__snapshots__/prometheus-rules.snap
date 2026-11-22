@@ -313,7 +313,7 @@ spec:
     rules:
     - alert: "LiteLLMDeploymentCooledDown"
       expr: |
-        sum by (litellm_model_name) (increase(litellm_deployment_cooled_down_total[30m])) > 0
+        sum by (litellm_model_name) (increase(litellm_deployment_cooled_down_total[30m])) > 10
       for: 5m
       labels:
         severity: "info"
@@ -324,7 +324,7 @@ spec:
         description: "Within the last 30m, the load balancer cooled down deployment {{ $labels.litellm_model_name }} (status {{ $labels.exception_status }})."
     - alert: "LiteLLMFallbackFailed"
       expr: |
-        sum by (requested_model, fallback_model) (increase(litellm_deployment_failed_fallbacks_total{fallback_model=~".*-fallback.*"}[30m])) > 0
+        sum by (requested_model, fallback_model) (increase(litellm_deployment_failed_fallbacks_total{fallback_model=~".*-fallback.*"}[30m])) > 20
       for: 5m
       labels:
         severity: "warning"

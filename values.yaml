@@ -104,7 +104,7 @@ prometheusRule:
         LiteLLMFallbackFailed:
           enabled: true
           expr: |
-            sum by (requested_model, fallback_model) (increase(litellm_deployment_failed_fallbacks_total{fallback_model=~".*-fallback.*"}[30m])) > 0
+            sum by (requested_model, fallback_model) (increase(litellm_deployment_failed_fallbacks_total{fallback_model=~".*-fallback.*"}[30m])) > 20
           summary: "LiteLLM fallback for {{ $labels.requested_model }} to {{ $labels.fallback_model }} failed"
           description: >-
             Within the last 30m, falling back from {{ $labels.requested_model }} to
@@ -113,7 +113,7 @@ prometheusRule:
         LiteLLMDeploymentCooledDown:
           enabled: true
           expr: |
-            sum by (litellm_model_name) (increase(litellm_deployment_cooled_down_total[30m])) > 0
+            sum by (litellm_model_name) (increase(litellm_deployment_cooled_down_total[30m])) > 10
           summary: "LiteLLM deployment {{ $labels.litellm_model_name }} was cooled down"
           description: >-
             Within the last 30m, the load balancer cooled down deployment
