@@ -57,6 +57,7 @@ data:
       OTEL_EXPORTER: console
     general_settings:
       master_key: os.environ/PROXY_MASTER_KEY
+      store_model_in_db: true
     litellm_settings:
       callbacks:
       - prometheus
